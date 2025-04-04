@@ -9,6 +9,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = 7007;
+const outcomeTable = "wydatki";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -62,17 +63,29 @@ app.get("/add-outcome", (req, res) => {
 
 // Przejmij dane z formularza gdy user klika "Save" i wywoluje POST.
 app.post("/add-outcome", async (req, res) => {
-  const outcomeNameDAO = req.body["outcomeName"];
+  const name = req.body["outcomeName"];
+  const amount = req.body["outcomeName"];
   try {
-    await db.collection("wydatki").insertOne({
-      outcomeNameDAO,
-      createdAt: new Date(),
+    await db.collection(outcomeTable).insertOne({
+      name,
+      amount,
+      addedDate: new Date(),
     });
     res.sendFile(path.join(__dirname, "public", "seeTodayOutcomeList.html"));
   } catch (err) {
     console.error("Insert failed:", err);
     res.status(500).send("Something went wrong.");
   }
+});
+
+app.get("/lista-wydatkow", async (req, res) => {
+    try {
+        const records = await db.collection(outcomeTable).find({}).toArray();
+        res.status(200).json(records);
+      } catch (e) {
+        console.error("Error fetch records:", e);
+        res.status(500).json({ error: "Failed to fetch records" });
+      }
 });
 
 // Uruchomienie serwera
