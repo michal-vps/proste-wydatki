@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Lista wszystkich wydatków</h1>
+
+    <table>
+        <% for(var i=0; i < data.length; i++) { %>
+           <tr>
+             <td><%= data[i].amount %></td>
+             <td><%= data[i].name %></td>
+             <td><%= data[i].addedDate %></td>
+           </tr>
+        <% } %>
+        </table>
+
+    
+</body>
+</html>

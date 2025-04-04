@@ -16,7 +16,6 @@ app.use(bodyParser.json());
 app.use(morgan("tiny")); // log details
 app.use(express.static(__dirname + "/public")); // Serve static files
 
-
 //MongoDB Config
 const uri =
   "mongodb+srv://michal:MUXoMLT321@cluster0.re1zc8a.mongodb.net/?appName=Cluster0";
@@ -40,7 +39,6 @@ async function connectWithMongo() {
 
     console.log("You successfully connected to MongoDB!");
     db = client.db("Cluster0"); // or whatever your DB name is
-
   } catch (err) {
     console.error("MongoDB connection failed:", err);
     process.exit(1); // only exit if it actually failed
@@ -48,7 +46,7 @@ async function connectWithMongo() {
 }
 connectWithMongo().catch(console.dir);
 
-// ROUTES - 
+// ROUTES -
 // Strona glowna startowa - zwraca widok startowy
 app.get("/home", (req, res) => {
   // console.log(req.rawHeaders);
@@ -64,14 +62,14 @@ app.get("/add-outcome", (req, res) => {
 // Przejmij dane z formularza gdy user klika "Save" i wywoluje POST.
 app.post("/add-outcome", async (req, res) => {
   const name = req.body["outcomeName"];
-  const amount = req.body["outcomeName"];
+  const amount = req.body["outcomeAmount"];
   try {
     await db.collection(outcomeTable).insertOne({
       name,
       amount,
       addedDate: new Date(),
     });
-    res.sendFile(path.join(__dirname, "public", "seeTodayOutcomeList.html"));
+    res.redirect("/lista-wydatkow");
   } catch (err) {
     console.error("Insert failed:", err);
     res.status(500).send("Something went wrong.");
@@ -79,13 +77,16 @@ app.post("/add-outcome", async (req, res) => {
 });
 
 app.get("/lista-wydatkow", async (req, res) => {
-    try {
-        const records = await db.collection(outcomeTable).find({}).toArray();
-        res.status(200).json(records);
-      } catch (e) {
-        console.error("Error fetch records:", e);
-        res.status(500).json({ error: "Failed to fetch records" });
-      }
+  try {
+    const records = await db.collection(outcomeTable).find({}).toArray();
+
+    res.render("expenseList.ejs", {
+      data: records,
+    });
+  } catch (e) {
+    console.error("Error fetch records:", e);
+    res.status(500).json({ error: "Failed to fetch records" });
+  }
 });
 
 // Uruchomienie serwera
