@@ -69,14 +69,14 @@ app.post("/add-outcome", async (req, res) => {
       amount,
       addedDate: new Date(),
     });
-    res.redirect("/lista-wydatkow");
+    res.redirect("/outcome-list");
   } catch (err) {
     console.error("Insert failed:", err);
     res.status(500).send("Something went wrong.");
   }
 });
 
-app.get("/lista-wydatkow", async (req, res) => {
+app.get("/outcome-list", async (req, res) => {
   try {
     const records = await db.collection(outcomeTable).find({}).toArray();
 
