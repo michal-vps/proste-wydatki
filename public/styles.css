@@ -1,0 +1,48 @@
+@media only screen and (min-width: 612px) {
+  body {
+    background-color: yellow;
+  }
+}
+
+/* max szerokosc dla pixel i pozostalych telefonow */
+/* @media (max-width: 512px){ */
+@media only screen and (min-width: 300px) and (max-width: 512px) {
+  body {
+    background-color: #f5efe7;
+
+    h1 {
+      font-size: 3.5rem;
+      text-align: center;
+      color: #3e5879;
+    }
+
+    a {
+      color: #3e5879;
+      /* border: 1px solid black; */
+      padding: 10px;
+    }
+
+    .actionsFlexContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 25px;
+
+      font-size: 1.5rem;
+    }
+
+    .actionsFlexContainer > a {
+      /* flex-grow: 1; */
+      /* border: 1px solid black; */
+      padding-bottom: 50px;
+      padding-top: 30px;
+    }
+  }
+}
+
+/* //not supported yet */
+@media only screen and (min-width: 513px) and (max-width: 5024px) {
+  body {
+    background-color: black;
+  }
+}
