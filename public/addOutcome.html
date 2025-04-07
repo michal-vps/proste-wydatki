@@ -3,20 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="./styles.css?styleUpdates3" />
+    <title>Dodaj nowy wydatek:</title>
   </head>
   <body>
     <h1>Nowy wydatek:</h1>
     <form action="/add-outcome" method="POST">
 
-      <label for="outcomeName">outcomeName</label>
+      <label for="outcomeName">Nazwa</label>
       <input type="text" id="outcomeName" name="outcomeName" />
       </br>
 
-      <label for="outcomeAmount">outcomeAmount:</label>
+      <label for="outcomeAmount">Kwota</label>
       <input type="text" id="outcomeAmount" name="outcomeAmount" />
 
-      <input type="submit" value="Zapisz" />
+      <input type="submit" value="Zapisz" class="button" />
     </form>
 
     <a href="./">Powrot</a>
