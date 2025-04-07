@@ -7,17 +7,29 @@
     <title>Dodaj nowy wydatek:</title>
   </head>
   <body>
+    <header>
+      <div class="logoAndBar">
+        <!-- <img src="./asset/logo-dolar-2.png" alt="Logo" class="logo" /> -->
+      </div>
+      <!-- <h1>Page Title</h1> -->
+    </header>
+
     <h1>Nowy wydatek:</h1>
+
     <form action="/add-outcome" method="POST">
+      <div class="outcomeFormFlex">
+        <label for="outcomeName">Nazwa</label>
+        <input type="text" id="outcomeName" name="outcomeName" />
+      </div>
 
-      <label for="outcomeName">Nazwa</label>
-      <input type="text" id="outcomeName" name="outcomeName" />
-      </br>
+      <div class="outcomeFormFlex">
+        <label for="outcomeAmount">Kwota</label>
+        <input type="text" id="outcomeAmount" name="outcomeAmount" />
+      </div>
 
-      <label for="outcomeAmount">Kwota</label>
-      <input type="text" id="outcomeAmount" name="outcomeAmount" />
-
-      <input type="submit" value="Zapisz" class="button" />
+      <div class="outcomeFormSaveOutcome">
+        <input type="submit" value="Zapisz" class="button" />
+      </div>
     </form>
 
     <a href="./">Powrot</a>

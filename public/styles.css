@@ -1,73 +1,77 @@
 /* max dla telefonu */
-@media only screen and (min-width: 300px) and (max-width: 512px) {
+@media only screen and (min-width: 300px) and (max-width: 5512px) {
   .logoAndBar {
     height: 75px;
-    background: url(./asset/gta-wall.png);
+    /* background: url(./asset/gta-header-logo.png) no-repeat; */
     /* object-fit: cover; */
     object-fit: scale-down;
   }
 
-  body {
-    background-color: #1B1212;
-
-    h1 {
-      font-size: 3.5rem;
-      text-align: center;
-      /* color: #3e5879; */
-      color: white;
-      padding-top: 50px;
-    }
-
-    a {
-      /* color: #3e5879; */
-      color: white;
-      /* border: 1px solid black; */
-      padding: 10px;
-    }
-
-    .actionsFlexContainer {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-      /* gap: 10px; */
-      /* gap: 25px; */
-
-      font-size: 1.5rem;
-      /* margin-left: 15px;
-      margin-right: 15px; */
-    } 
+  h1 {
+    font-size: 3.5rem;
+    text-align: center;
+    /* color: #3e5879; */
+    padding-top: 50px;
   }
 
-  footer {
-    margin-top: 300px;
-    width: 100%;
-    height: 100%;
-    background: url(./asset/gta-wall.png) no-repeat;
+  a {
+    /* color: #3e5879; */
+    padding: 10px;
   }
 
-  form > label {
-    color: white;
-    font-size: 2.5rem;
+  .actionsFlexContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    font-size: 1.5rem;
   }
 
-  form > input {
-    width: 20em;
-    height: 20px;
+  form > div > label {
+    font-size: 2rem;
   }
 
-  form > .button {
-    width: 100px;
+  form > div > input {
+    width: 15em;
     height: 40px;
+  }
+
+  /* button zapisz wydatek */
+  .button {
+    background-color: #04aa6d; /* Green */
+    border: none;
+    color: white;
+    /* text-align: center; */
+    /* text-decoration: none; */
+    display: inline-block;
+    font-size: 0.8em;
+    /* margin: 4px 2px; */
+    cursor: pointer;
+  }
+
+  .outcomeFormSaveOutcome {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 50px;
+  }
+
+  .outcomeFormFlex {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    padding-top: 10px;
+    align-items: flex-start;
   }
 }
 
 /* //not supported yet */
 @media only screen and (min-width: 513px) and (max-width: 5024px) {
   body {
-    background-color: white;
+    background-color: grey;
   }
   .logoAndBar {
-    background: url(./asset/gta-wall.png);
     max-width: 100%;
     max-height: 100%;
   }
