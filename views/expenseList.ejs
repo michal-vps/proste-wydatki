@@ -11,21 +11,28 @@
   </head>
 
   <body>
+    <header>
+      <a href="./">
+        <img src="./asset/blue200x87.png" />
+      </a>
+    </header>
+
     <h1>Lista wszystkich wydatków</h1>
     <section id="expenseListTableFlexbox">
       <header>
         <div class="col">Kwota</div>
         <div class="col">Opis</div>
         <div class="col">Data</div>
-        <div class="col">Operacje</div>
+        <!-- <div class="col">Operacje</div> -->
       </header>
 
+      <hr>
       <% for(var i=0; i < data.length; i++) { %>
       <div class="row">
         <div class="col"><%= data[i].amount %></div>
         <div class="col"><%= data[i].name %></div>
         <div class="col"><%= data[i].formattedDate %></div>
-        <div class="col"> <a href="/remove-expense/<%= data[i]._id %>">Usuń</a>   </div>
+        <!-- <div class="col"> <a style="color: grey" href="/remove-expense/<%= data[i]._id %>">Edycja</a>   </div> -->
       </div>
       <% } %>
     </section>

@@ -1,21 +1,12 @@
 /* max dla telefonu */
 @media only screen and (min-width: 300px) and (max-width: 5512px) {
-  .logoAndBar {
-    height: 75px;
-    /* background: url(./asset/gta-header-logo.png) no-repeat; */
-    /* object-fit: cover; */
-    object-fit: scale-down;
-  }
-
   h1 {
     font-size: 3.5rem;
     text-align: center;
-    /* color: #3e5879; */
-    padding-top: 50px;
+    padding-top: 30px;
   }
 
   a {
-    /* color: #3e5879; */
     padding: 10px;
   }
 

@@ -4,7 +4,8 @@ import { fileURLToPath } from "url";
 import morgan from "morgan";
 import bodyParser from "body-parser"; // reading what user type in form and then sent with button as POST
 import { MongoClient, ServerApiVersion } from "mongodb";
-import { format, formatDistance, formatRelative, isValid } from "date-fns";
+import { format, formatDistanceToNow, differenceInCalendarDays, formatRelative, isValid, subDays } from "date-fns";
+import { pl } from 'date-fns/locale';
 
 //init 'const' before 'use' section
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -79,13 +80,19 @@ app.post("/add-outcome", async (req, res) => {
 
 app.get("/outcome-list", async (req, res) => {
   try {
-    const expensesList = await db.collection(outcomeTable).find({}).toArray();
+    const expensesList = await db.collection(outcomeTable).find({}).sort({_id:-1}).toArray();
 
-    const expenseListWithFormattedDate =
-      changeDateFormatFromLongToShort(expensesList);
+    const formattedRecords = expensesList.map(record => {
+      const date = new Date(record.addedDate);
 
-    res.render("expenseList.ejs", {
-      data: expenseListWithFormattedDate,
+      return {
+        ...record,
+        formattedDate: formatPolishRelativeDate(date)
+      };
+    });
+
+    res.render('expenseList.ejs', {
+      data: formattedRecords,
     });
   } catch (e) {
     console.error("Error fetch records:", e);
@@ -98,18 +105,17 @@ app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-function changeDateFormatFromLongToShort(expensesList) {
-  return expensesList.map((record) => {
-    const addedDateDao = new Date(record.addedDate);
-    const isDateValid = isValid(addedDateDao);
+function formatPolishRelativeDate(date) {
+  if (!isValid(date)) return 'Brak daty';
 
-    return {
-      ...record,
-      formattedDate: isDateValid
-        ? format(addedDateDao, "dd/MM/yyyy 'r' HH:mm")
-        : "Invalid date",
-    };
-  });
+  const daysAgo = differenceInCalendarDays(new Date(), date);
+
+  if (daysAgo === 0) return 'dziś';
+  if (daysAgo === 1) return 'wczoraj';
+  if (daysAgo === 2) return 'przedwczoraj';
+  if (daysAgo === 3) return `${daysAgo} dni temu`;
+
+  return format(date, 'd MMMM', { locale: pl }); // optionally add 'HH:mm' or year if needed
 }
 
 // alternatywnie uruchom app tylko gdy DB jest ready
