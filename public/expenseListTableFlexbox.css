@@ -1,0 +1,12 @@
+header,
+.row {
+  display: flex; /* aligns all child elements (flex items) in a row */
+}
+
+.col {
+  flex: 1; /* distributes space on the line equally among items */
+}
+
+header > .col {
+    font-weight: bold;
+}

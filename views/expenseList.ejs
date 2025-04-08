@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Lista wszystkich wydatków</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista wydatków</title>
 
-    <table>
-        <% for(var i=0; i < data.length; i++) { %>
-           <tr>
-             <td><%= data[i].amount %></td>
-             <td><%= data[i].name %></td>
-             <td><%= data[i].addedDate %></td>
-           </tr>
-        <% } %>
-        </table>
-</body>
+    <!-- it works because styles are in 'public' and in 'index.js' we added '/public' so it's server everything well and make available -->
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./expenseListTableFlexbox.css" />
+  </head>
+
+  <body>
+    <h1>Lista wszystkich wydatków</h1>
+    <section id="expenseListTableFlexbox">
+      <header>
+        <div class="col">Kwota</div>
+        <div class="col">Opis</div>
+        <div class="col">Data</div>
+        <div class="col">Operacje</div>
+      </header>
+
+      <% for(var i=0; i < data.length; i++) { %>
+      <div class="row">
+        <div class="col"><%= data[i].amount %></div>
+        <div class="col"><%= data[i].name %></div>
+        <div class="col"><%= data[i].formattedDate %></div>
+        <div class="col"> <a href="/remove-expense/<%= data[i]._id %>">Usuń</a>   </div>
+      </div>
+      <% } %>
+    </section>
+
+  </body>
 </html>

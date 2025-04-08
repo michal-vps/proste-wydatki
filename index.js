@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import morgan from "morgan";
 import bodyParser from "body-parser"; // reading what user type in form and then sent with button as POST
 import { MongoClient, ServerApiVersion } from "mongodb";
+import { format, formatDistance, formatRelative, isValid } from "date-fns";
 
 //init 'const' before 'use' section
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -78,10 +79,13 @@ app.post("/add-outcome", async (req, res) => {
 
 app.get("/outcome-list", async (req, res) => {
   try {
-    const records = await db.collection(outcomeTable).find({}).toArray();
+    const expensesList = await db.collection(outcomeTable).find({}).toArray();
+
+    const expenseListWithFormattedDate =
+      changeDateFormatFromLongToShort(expensesList);
 
     res.render("expenseList.ejs", {
-      data: records,
+      data: expenseListWithFormattedDate,
     });
   } catch (e) {
     console.error("Error fetch records:", e);
@@ -93,6 +97,20 @@ app.get("/outcome-list", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+function changeDateFormatFromLongToShort(expensesList) {
+  return expensesList.map((record) => {
+    const addedDateDao = new Date(record.addedDate);
+    const isDateValid = isValid(addedDateDao);
+
+    return {
+      ...record,
+      formattedDate: isDateValid
+        ? format(addedDateDao, "dd/MM/yyyy 'r' HH:mm")
+        : "Invalid date",
+    };
+  });
+}
 
 // alternatywnie uruchom app tylko gdy DB jest ready
 // Start app only after DB is ready
