@@ -67,3 +67,30 @@
     max-height: 100%;
   }
 }
+
+/* DLA WSZYSTKICH URZADZEN*/
+
+/* Czcionka dla tekstu na calej stronie */
+body {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+  /* font-variation-settings: "wdth" 100; */
+}
+
+/* Oczywiscie headings maja wlasną */
+h1, h2, h3 {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+/* tytul strony ma inna czcionke */
+.tytul {
+  font-family: "Caveat Brush", cursive;
+  font-weight: 400;
+  font-style: normal;
+}

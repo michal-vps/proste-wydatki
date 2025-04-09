@@ -3,9 +3,9 @@ import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import morgan from "morgan";
 import bodyParser from "body-parser"; // reading what user type in form and then sent with button as POST
-import { MongoClient, ServerApiVersion } from "mongodb";
-import { format, formatDistanceToNow, differenceInCalendarDays, formatRelative, isValid, subDays } from "date-fns";
-import { pl } from 'date-fns/locale';
+import { MongoClient, ServerApiVersion, ObjectId } from "mongodb";
+import { format, differenceInCalendarDays, isValid } from "date-fns";
+import { pl } from "date-fns/locale"; //do polskiego jezyka
 
 //init 'const' before 'use' section
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -66,11 +66,7 @@ app.post("/add-outcome", async (req, res) => {
   const name = req.body["outcomeName"];
   const amount = req.body["outcomeAmount"];
   try {
-    await db.collection(outcomeTable).insertOne({
-      name,
-      amount,
-      addedDate: new Date(),
-    });
+    await addOutcomeToMongo(name, amount);
     res.redirect("/outcome-list");
   } catch (err) {
     console.error("Insert failed:", err);
@@ -80,18 +76,22 @@ app.post("/add-outcome", async (req, res) => {
 
 app.get("/outcome-list", async (req, res) => {
   try {
-    const expensesList = await db.collection(outcomeTable).find({}).sort({_id:-1}).toArray();
-
-    const formattedRecords = expensesList.map(record => {
+    const expensesList = await db
+      .collection(outcomeTable)
+      .find({})
+      .sort({ _id: -1 })
+      .toArray();
+    console.log(expensesList);
+    const formattedRecords = expensesList.map((record) => {
       const date = new Date(record.addedDate);
 
       return {
         ...record,
-        formattedDate: formatPolishRelativeDate(date)
+        formattedDate: formatPolishRelativeDate(date),
       };
     });
 
-    res.render('expenseList.ejs', {
+    res.render("expenseList.ejs", {
       data: formattedRecords,
     });
   } catch (e) {
@@ -100,22 +100,53 @@ app.get("/outcome-list", async (req, res) => {
   }
 });
 
+app.get("/remove-expense/:id", async (req, res) => {
+  const outcomeId = req.params.id;
+
+  try {
+    const result = await db
+      .collection(outcomeTable)
+      .deleteOne({ _id: new ObjectId(outcomeId) });
+
+    if (result.deletedCount === 0) {
+      console.warn("No document found with ID:", outcomeId);
+      return res.status(404).json({
+        error: `Nie znaleziono rekordu z ID: ${outcomeId}`,
+      });
+    }
+
+    console.log("Usunięto dokument:", outcomeId);
+    res.redirect("/outcome-list");
+  } catch (error) {
+    console.error("Błąd przy usuwaniu:", error);
+    res.status(500).json({ error: "Wystąpił błąd podczas usuwania." });
+  }
+});
+
 // Uruchomienie serwera
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
+async function addOutcomeToMongo(name, amount) {
+  await db.collection(outcomeTable).insertOne({
+    name,
+    amount,
+    addedDate: new Date(),
+  });
+}
+
 function formatPolishRelativeDate(date) {
-  if (!isValid(date)) return 'Brak daty';
+  if (!isValid(date)) return "Brak daty";
 
   const daysAgo = differenceInCalendarDays(new Date(), date);
 
-  if (daysAgo === 0) return 'dziś';
-  if (daysAgo === 1) return 'wczoraj';
-  if (daysAgo === 2) return 'przedwczoraj';
+  if (daysAgo === 0) return "dziś";
+  if (daysAgo === 1) return "wczoraj";
+  if (daysAgo === 2) return "przedwczoraj";
   if (daysAgo === 3) return `${daysAgo} dni temu`;
 
-  return format(date, 'd MMMM', { locale: pl }); // optionally add 'HH:mm' or year if needed
+  return format(date, "d MMMM", { locale: pl }); // optionally add 'HH:mm' or year if needed
 }
 
 // alternatywnie uruchom app tylko gdy DB jest ready

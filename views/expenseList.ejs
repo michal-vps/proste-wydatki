@@ -23,16 +23,16 @@
         <div class="col">Kwota</div>
         <div class="col">Opis</div>
         <div class="col">Data</div>
-        <!-- <div class="col">Operacje</div> -->
+        <div class="col">Usuń</div>
       </header>
 
       <hr>
       <% for(var i=0; i < data.length; i++) { %>
       <div class="row">
-        <div class="col"><%= data[i].amount %></div>
+        <div class="col"><%= data[i].amount %> zł</div>
         <div class="col"><%= data[i].name %></div>
         <div class="col"><%= data[i].formattedDate %></div>
-        <!-- <div class="col"> <a style="color: grey" href="/remove-expense/<%= data[i]._id %>">Edycja</a>   </div> -->
+        <div class="col alignIcon"> <a href="/remove-expense/<%=data[i]._id%>"><img src="./asset/remove2.png"/></a>  </div>
       </div>
       <% } %>
     </section>
