@@ -1,7 +1,7 @@
 /* max dla telefonu */
 @media only screen and (min-width: 300px) and (max-width: 5512px) {
   h1 {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     text-align: center;
     padding-top: 30px;
   }
@@ -12,7 +12,7 @@
 
   .actionsFlexContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
 
     font-size: 1.5rem;
@@ -22,7 +22,7 @@
     font-size: 2rem;
   }
 
-  form > div > input {
+  form > div > input, select {
     width: 15em;
     height: 40px;
   }
@@ -50,10 +50,14 @@
   .outcomeFormFlex {
     display: flex;
     flex-direction: row;
-    gap: 20px;
-    justify-content: center;
+    /* gap: 20px; */
+    justify-content: space-between;
+
+    /* aby byly rowno od lewej i prawej krawedzi strony*/
     padding-top: 10px;
-    align-items: flex-start;
+    padding-left: 50px;
+    padding-right: 50px;
+    /* align-items: flex-start; */
   }
 }
 

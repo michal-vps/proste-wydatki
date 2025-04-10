@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css?styleUpdates3" />
+    <title>Dodaj nowy wydatek:</title>
+  </head>
+  <body>
+    <header>
+      <a href="./">
+        <img src="./asset/blue200x87.png" />
+      </a>
+    </header>
+
+    <h1>Nowy wydatek:</h1>
+
+    <form action="/add-outcome" method="POST">
+      <div class="outcomeFormFlex">
+        <label for="outcomeName">Nazwa</label>
+        <input type="text" id="outcomeName" name="outcomeName" />
+      </div>
+
+      <div class="outcomeFormFlex">
+        <label for="outcomeAmount">Kwota</label>
+        <input type="text" id="outcomeAmount" name="outcomeAmount" />
+      </div>
+
+      <div class="outcomeFormFlex">
+        <label for="outcomeCategory">Kategoria</label>
+
+        <select name="outcomeCategoryCode" id="outcomeCategory">
+            <option value="">Wybierz</option>
+
+            <option value="Zwierzeta">Zwierzeta</option>
+        </select>
+        <!-- <label for="outcomeCategory">Kategoria</label>
+        <input type="text" id="outcomeCategory" name="outcomeCategory" /> -->
+      </div>
+
+      <div class="outcomeFormSaveOutcome">
+        <input type="submit" value="Zapisz" class="button" />
+      </div>
+    </form>
+
+    <a href="./">Powrót</a>
+  </body>
+</html>

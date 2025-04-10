@@ -61,12 +61,23 @@ app.get("/add-outcome", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "addOutcome.html"));
 });
 
+app.get("/add-outcome-adv", async (req, res) => {
+  try {
+    const categoriesList = await db.collection("categories").find().toArray();
+    res.render("addOutcomeAdvanced.ejs", { categoriesList });
+  } catch (e) {
+    console.error("Błąd pobierania kategorii:", e);
+    res.status(500).send("Wystąpił błąd.");
+  }
+});
+
 // Przejmij dane z formularza gdy user klika "Save" i wywoluje POST.
 app.post("/add-outcome", async (req, res) => {
   const name = req.body["outcomeName"];
   const amount = req.body["outcomeAmount"];
+  const category = req.body["outcomeCategory"];
   try {
-    await addOutcomeToMongo(name, amount);
+    await addOutcomeToMongo(name, amount, category);
     res.redirect("/outcome-list");
   } catch (err) {
     console.error("Insert failed:", err);
@@ -82,6 +93,7 @@ app.get("/outcome-list", async (req, res) => {
       .sort({ _id: -1 })
       .toArray();
     console.log(expensesList);
+
     const formattedRecords = expensesList.map((record) => {
       const date = new Date(record.addedDate);
 
@@ -123,16 +135,61 @@ app.get("/remove-expense/:id", async (req, res) => {
   }
 });
 
+// KATEGORIE
+app.get("/category-list", async (req, res) => {
+  const allCategories = await db
+    .collection("kategorieWydatkow")
+    .find({})
+    .toArray();
+
+  const structuredCategories = groupCategories(allCategories);
+  res.render("categoryList.ejs", {
+    categories: structuredCategories,
+  });
+});
+
+function groupCategories(flatCategories) {
+  const categoryMap = new Map();
+  const subcategories = [];
+
+  // 1. Podziel kategorie główne i podkategorie
+  for (const category of flatCategories) {
+    if (category.code % 100 === 0) {
+      // Kategorie główne
+      category.children = [];
+      categoryMap.set(category.code, category);
+    } else {
+      // Podkategorie – zbierz je tymczasowo
+      subcategories.push(category);
+    }
+  }
+
+  // 2. Dołącz podkategorie do rodziców
+  for (const sub of subcategories) {
+    const parentCode = Math.floor(sub.code / 100) * 100;
+    const parent = categoryMap.get(parentCode);
+    if (parent) {
+      parent.children.push(sub);
+    } else {
+      console.warn(`Nie znaleziono kategorii nadrzędnej dla ${sub.name} (kod: ${sub.code})`);
+    }
+  }
+
+  // 3. Zwróć tylko kategorie główne z dołączonymi dziećmi
+  return Array.from(categoryMap.values());
+}
+
 // Uruchomienie serwera
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-async function addOutcomeToMongo(name, amount) {
+async function addOutcomeToMongo(name, amount, category) {
   await db.collection(outcomeTable).insertOne({
     name,
     amount,
     addedDate: new Date(),
+    category,
   });
 }
 
